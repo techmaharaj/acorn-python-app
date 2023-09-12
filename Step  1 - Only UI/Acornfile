@@ -3,4 +3,10 @@ containers: {
     build: "."
     ports: publish: "5000/http"
   }
+  env: {
+    "FLASK_DEBUG": "1"
+  }
+  dirs: {
+    "/app": "./"
+  }
 }
