@@ -1,0 +1,6 @@
+containers: {
+  app: {
+    build: "."
+    ports: publish: "5000/http"
+  }
+}
