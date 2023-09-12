@@ -1,0 +1,32 @@
+containers: {
+  app: {
+    build: "."
+    ports: publish: "5000/http"
+     env: {
+      "DB_PASSWORD": "secret://pg-creds/token"
+      "FLASK_DEBUG": "1"
+    }
+    dirs: {
+      "/app": "./"
+    }
+  }
+
+  db: {
+    image: "postgres:alpine"
+    ports: "5432/tcp"
+    env: {
+      "POSTGRES_USER": "acorn-devspace"
+      "POSTGRES_PASSWORD": "secret://pg-creds/token"
+      "POSTGRES_DB": "acorn-devspace"
+    }
+    files: {
+      "/docker-entrypoint-initdb.d/00-init.sql": "CREATE TABLE expenses (id serial PRIMARY KEY, expense text, cost integer);"
+    }
+  } 
+}
+
+secrets: {
+  "pg-creds": {
+    type: "token"
+  }
+}
