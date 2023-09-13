@@ -1,0 +1,34 @@
+services: atlas: generated: job: "mongo-atlas-service"
+
+jobs: "mongo-atlas-service": {
+  build: context: "."
+  env: {
+    MONGODB_ATLAS_PUBLIC_API_KEY: "secret://atlas-creds/public_key"
+    MONGODB_ATLAS_PRIVATE_API_KEY: "secret://atlas-creds/private_key"
+    MONGODB_ATLAS_PROJECT_ID: "secret://atlas-creds/project_id"
+    DB_USER: "secret://db-creds/username"
+    DB_PASS: "secret://db-creds/password"
+  }
+  events: ["create", "delete"]
+}
+
+secrets: {
+    "db-creds": 
+    {
+        type: "basic"
+        data: {  
+            username: "<your-username>" //Replace with actual MongoDB Atlas Username
+            password: "<your-passowrd>" //Replace with actual MongoDB Atlas Password
+        }
+    }
+
+    "atlas-creds": {
+      external: "atlas-creds"
+      type: "opaque"
+      data: {
+          public_key: "MONGODB_ATLAS_PUBLIC_API_KEY" // Update with your PUBLIC_API_KEY
+          private_key: "MONGODB_ATLAS_PRIVATE_API_KEY" // Update with your PRIVATE_API_KEY
+          project_id: "MONGODB_ATLAS_PROJECT_ID" // Update with your PROJECT_ID
+      }
+  }
+}
